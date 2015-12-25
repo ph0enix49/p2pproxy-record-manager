@@ -48,6 +48,17 @@
     </nav>
 
     <div class="container">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <div class="alert alert-success">
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </div><!-- /.container -->
 

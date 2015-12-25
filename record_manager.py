@@ -119,7 +119,7 @@ def records_form():
     form.start.description = 'e.g. {}'.format(now.strftime('%d-%m-%Y %H:%M'))
     form.end.description = 'e.g. {}'.format(later.strftime('%d-%m-%Y %H:%M'))
     if form.validate_on_submit():
-        flash('test')
+        flash('Record added')
         return redirect('/records')
     return render_template('records_add.html', form=form)
 

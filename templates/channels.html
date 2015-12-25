@@ -22,12 +22,12 @@
         </tr>
       </thead>
       <tbody>
-        {% for id, channel in channels.items() %}
+        {% for channel in channels %}
           <tr>
-            <td>{{ id }}</td>
-            <td>{{ channel['name'] }}</td>
-            <td>{{ channel['group'] }}</td>
-            <td>{{ channel['epg_id'] }}</td>
+            <td>{{ channel[0] }}</td>
+            <td>{{ channel[1] }}</td>
+            <td>{{ channel[2] }}</td>
+            <td>{{ channel[3] }}</td>
           </tr>
         {% endfor %}
       </tbody>

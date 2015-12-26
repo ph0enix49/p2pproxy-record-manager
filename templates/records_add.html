@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
 {% block menu %}
-<li><a href="/">Home</a></li>
-<li><a href="/channels">Channels</a></li>
-<li class="active"><a href="/records">Records</a></li>
-<li><a href="/settings">Settings</a></li>
+<li><a href="{{ url_for('index') }}">Home</a></li>
+<li><a href="{{ url_for('channels') }}">Channels</a></li>
+<li class="active"><a href="{{ url_for('records') }}">Records</a></li>
+<li><a href="{{ url_for('settings') }}">Settings</a></li>
 {% endblock %}
 {% block content %}
 <div class="page-header">

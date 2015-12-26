@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+import os
 import re
 import requests
 
@@ -60,6 +62,7 @@ class RecordManagerServer(Flask):
                     datetime.strptime(record['start'], '%d%m%Y_%H%M%S'),
                     datetime.strptime(record['end'], '%d%m%Y_%H%M%S'),
                     record['status'],
+                    record['id'],
                 )
             )
         return sorted(records, key=lambda x: x[0])
@@ -73,6 +76,7 @@ class DefaultConfig(object):
     PORT = "8081"
     #WTF_CSRF_ENABLED = False
     SECRET_KEY = "Testtesttest"
+    RECORDS_DIR = ""
 
 # Initialise application
 app = RecordManagerServer(__name__)
@@ -133,12 +137,34 @@ def records_form():
             }
             result = requests.get(app.url.substitute(
                 target='records/add'), params=payload)
-            print result.text
             flash('Record scheduled', 'success')
         except Exception as e:
             flash('Record schedule failed: {}'.format(e), 'error')
         return redirect('/records')
     return render_template('records_add.html', form=form)
+
+@app.route('/records/delete/<record_id>')
+def records_delete_confirmation(record_id):
+    try:
+        payload = {
+            'id': record_id,
+        }
+        stop = requests.get(app.url.substitute(
+            target='records/del'), params=payload)
+        delete = requests.get(app.url.substitute(
+            target='records/del'), params=payload)
+        if delete.status_code != 200:
+            raise Exception('delete failed')
+        if stop.status_code != 200:
+            raise Exception('stop failed')
+        if app.config['RECORDS_DIR']:
+            fname = '{}/{}.ts'.format(app.config['RECORDS_DIR'], record_id)
+            if os.path.exists(fname):
+                os.remove(fname)
+        flash('Record deleted', 'success')
+    except Exception as e:
+        flash('Record deletion failed: {}'.format(e), 'error')
+    return redirect('/records')
 
 @app.route('/settings')
 def settings():

@@ -51,6 +51,7 @@ class RecordManagerServer(Flask):
         """
         Return and cache records list
         """
+        requests.get(self.url.substitute(target='login'))
         req = requests.get(self.url.substitute(target='records/all'))
         soup = BeautifulSoup(req.text, 'html.parser')
         channel_name = re.compile(r'(\[.*\])\s(.*)')
@@ -135,8 +136,10 @@ def records_form():
                 'start': form.start.data.strftime('%d%m%Y_%H%M%S'),
                 'end': form.end.data.strftime('%d%m%Y_%H%M%S'),
             }
+            requests.get(app.url.substitute(target='login'))
             result = requests.get(app.url.substitute(
                 target='records/add'), params=payload)
+            print result
             flash('Record scheduled', 'success')
         except Exception as e:
             flash('Record schedule failed: {}'.format(e), 'error')

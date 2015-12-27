@@ -83,7 +83,7 @@ class DefaultConfig(object):
 app = RecordManagerServer(__name__)
 
 # Initialise configuration
-app.config.from_object('record_manager.DefaultConfig')
+app.config.from_object('record_manager.record_manager.DefaultConfig')
 app.config.from_pyfile('config.cfg')
 app.generate_url(app.config['IP'], app.config['PORT'])
 

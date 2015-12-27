@@ -25,6 +25,7 @@ setup(name='p2pproxy-record-manager',
         'Jinja2',
         'Werkzeug',
         'WTForms>=2.0',
+        'requests>=2.9.0',
     ],
     entry_points={
         'console_scripts': [

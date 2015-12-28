@@ -69,6 +69,21 @@ class RecordManagerServer(Flask):
                 )
             )
         return sorted(records, key=lambda x: x[0])
+    
+    def disable_links(self):
+        """
+        Disabled links when P2P proxy is inaccessible
+        """
+        try:
+            req = requests.get(app.url.substitute(target='stat'), timeout=2)
+            ok = bool(req.status_code == 200)
+        except:
+            ok = False
+        if not ok:
+            disabled = ['channels', 'records']
+        else:
+            disabled = []
+        return ok, disabled
                 
 
 class DefaultConfig(object):
@@ -91,13 +106,7 @@ def index():
     Index page with the list of main links to display
     """
     # Check if p2p proxy server is accessible
-    try:
-        req = requests.get(app.url.substitute(target='stat'), timeout=2)
-        ok = bool(req.status_code == 200)
-        disabled = None
-    except:
-        ok = False
-        disabled = 'class="disabled"'
+    ok, disabled = app.disable_links()
     return render_template('index.html', ok=ok, disabled=disabled)
 
 @app.route('/channels')
@@ -169,7 +178,8 @@ def settings():
     """
     Settings link
     """
-    return render_template('settings.html')
+    ok, disabled = app.disable_links()
+    return render_template('settings.html', disabled=disabled)
 
 @app.route('/orig')
 def orig():

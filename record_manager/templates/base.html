@@ -48,7 +48,7 @@
           {% set active_page = active_page|default('index') -%}
           <ul class="nav navbar-nav">
             {% for id, caption in navigation_bar %}
-              <li{% if id == active_page %} class="active"{% endif %}><a href="{{ url_for(id)|e }}">{{ caption|e }}</a></li>
+              <li class="{% if id == active_page %}active{% endif %}{% if id in disabled %} disabled{% endif %}"><a href="{% if id in disabled %}#{% else %}{{ url_for(id)|e }}{% endif %}">{{ caption|e }}</a></li>
             {% endfor %}
             {% block menu %}
             {% endblock %}

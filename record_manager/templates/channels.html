@@ -1,11 +1,6 @@
 {% extends "base.html" %}
+{% set active_page = "channels" %}
 {% block title %}Index{% endblock %}
-{% block menu %}
-<li><a href="{{ url_for('index') }}">Home</a></li>
-<li class="active"><a href="{{ url_for('channels') }}">Channels</a></li>
-<li><a href="{{ url_for('records') }}">Records</a></li>
-<li><a href="{{ url_for('settings') }}">Settings</a></li>
-{% endblock %}
 {% block content %}
 <div class="page-header">
   <h2>Channels</h2>

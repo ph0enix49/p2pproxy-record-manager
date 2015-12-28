@@ -1,11 +1,6 @@
 {% extends "base.html" %}
+{% set active_page = "index" %}
 {% block title %}Index{% endblock %}
-{% block menu %}
-<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-<li><a href="{{ url_for('channels') }}">Channels</a></li>
-<li><a href="{{ url_for('records') }}">Records</a></li>
-<li><a href="{{ url_for('settings') }}">Settings</a></li>
-{% endblock %}
 {% block content %}
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">

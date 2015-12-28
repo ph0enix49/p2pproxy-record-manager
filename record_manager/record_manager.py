@@ -94,9 +94,11 @@ def index():
     try:
         req = requests.get(app.url.substitute(target='stat'), timeout=2)
         ok = bool(req.status_code == 200)
+        disabled = None
     except:
         ok = False
-    return render_template('index.html', ok=ok)
+        disabled = 'class="disabled"'
+    return render_template('index.html', ok=ok, disabled=disabled)
 
 @app.route('/channels')
 def channels():
@@ -173,8 +175,11 @@ def settings():
 def orig():
     return render_template('index_orig.html')
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='P2P Proxy Record manager')
+def main():
+    parser = argparse.ArgumentParser(description=(
+        'P2P Proxy Record manager. Manage P2P proxy recordings.'
+        )
+    )
     parser.add_argument('--p2pproxy-address', '-a', default='127.0.0.1',
         help='P2P Proxy IP address. Default: 127.0.0.1')
     parser.add_argument('--p2pproxy-port', '-p', default='8081',
@@ -185,3 +190,6 @@ if __name__ == '__main__':
     app.config['PORT'] = args.p2pproxy_port
     app.generate_url(app.config['IP'], app.config['PORT'])
     app.run(host='0.0.0.0', debug=True)
+
+if __name__ == '__main__':
+    main()

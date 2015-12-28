@@ -5,5 +5,3 @@ Web application with a frontend to add/edit/remove recording schedules.
 
 Features:
 * Choose a channel to record by specifying date and time
-* Mark the record as recurring every day for the specific time
-* Create a recurring recording for a channel and choose the amount of hours to keep the records

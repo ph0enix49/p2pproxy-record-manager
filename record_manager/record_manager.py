@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import argparse
 import re
 import requests
 
@@ -30,8 +30,9 @@ class RecordManagerServer(Flask):
         Return and cache channel list
         """
         if not self._channels or len(self._channels) == 0:
-            requests.get(self.url.substitute(target='login'))
-            req = requests.get(self.url.substitute(target='channels/'))
+            requests.get(self.url.substitute(target='login'), timeout=2)
+            req = requests.get(self.url.substitute(target='channels/'),
+                timeout=2)
             soup = BeautifulSoup(req.text, 'html.parser')
             for channel in soup.find_all('channel'):
                 self._channels.append(
@@ -51,8 +52,9 @@ class RecordManagerServer(Flask):
         """
         Return and cache records list
         """
-        requests.get(self.url.substitute(target='login'))
-        req = requests.get(self.url.substitute(target='records/all'))
+        requests.get(self.url.substitute(target='login'), timeout=2)
+        req = requests.get(self.url.substitute(target='records/all'),
+            timeout=2)
         soup = BeautifulSoup(req.text, 'html.parser')
         channel_name = re.compile(r'(\[.*\])\s(.*)')
         records = []
@@ -75,17 +77,13 @@ class DefaultConfig(object):
     """
     IP = "127.0.0.1"
     PORT = "8081"
-    #WTF_CSRF_ENABLED = False
     SECRET_KEY = "Testtesttest"
-    RECORDS_DIR = ""
 
 # Initialise application
 app = RecordManagerServer(__name__)
 
 # Initialise configuration
-app.config.from_object('record_manager.record_manager.DefaultConfig')
-app.config.from_pyfile('config.cfg')
-app.generate_url(app.config['IP'], app.config['PORT'])
+app.config.from_object(DefaultConfig)
 
 @app.route('/')
 def index():
@@ -94,7 +92,7 @@ def index():
     """
     # Check if p2p proxy server is accessible
     try:
-        req = requests.get(app.url.substitute(target='stat'))
+        req = requests.get(app.url.substitute(target='stat'), timeout=2)
         ok = bool(req.status_code == 200)
     except:
         ok = False
@@ -136,10 +134,9 @@ def records_form():
                 'start': form.start.data.strftime('%d%m%Y_%H%M%S'),
                 'end': form.end.data.strftime('%d%m%Y_%H%M%S'),
             }
-            requests.get(app.url.substitute(target='login'))
+            requests.get(app.url.substitute(target='login'), timeout=2)
             result = requests.get(app.url.substitute(
-                target='records/add'), params=payload)
-            print result
+                target='records/add'), params=payload, timeout=2)
             flash('Record scheduled', 'success')
         except Exception as e:
             flash('Record schedule failed: {}'.format(e), 'error')
@@ -153,17 +150,13 @@ def records_delete_confirmation(record_id):
             'id': record_id,
         }
         stop = requests.get(app.url.substitute(
-            target='records/del'), params=payload)
+            target='records/del'), params=payload, timeout=2)
         delete = requests.get(app.url.substitute(
-            target='records/del'), params=payload)
+            target='records/del'), params=payload, timeout=2)
         if delete.status_code != 200:
             raise Exception('delete failed')
         if stop.status_code != 200:
             raise Exception('stop failed')
-        if app.config['RECORDS_DIR']:
-            fname = '{}/{}.ts'.format(app.config['RECORDS_DIR'], record_id)
-            if os.path.exists(fname):
-                os.remove(fname)
         flash('Record deleted', 'success')
     except Exception as e:
         flash('Record deletion failed: {}'.format(e), 'error')
@@ -181,4 +174,14 @@ def orig():
     return render_template('index_orig.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    parser = argparse.ArgumentParser(description='P2P Proxy Record manager')
+    parser.add_argument('--p2pproxy-address', '-a', default='127.0.0.1',
+        help='P2P Proxy IP address. Default: 127.0.0.1')
+    parser.add_argument('--p2pproxy-port', '-p', default='8081',
+        help='P2P Proxy port. Default: 8081')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.1')
+    args = parser.parse_args()
+    app.config['IP'] = args.p2pproxy_address
+    app.config['PORT'] = args.p2pproxy_port
+    app.generate_url(app.config['IP'], app.config['PORT'])
+    app.run(host='0.0.0.0', debug=True)

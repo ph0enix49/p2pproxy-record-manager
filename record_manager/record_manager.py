@@ -107,7 +107,9 @@ def index():
     """
     # Check if p2p proxy server is accessible
     ok, disabled = app.disable_links()
-    return render_template('index.html', ok=ok, disabled=disabled)
+    status_params = (app.config['IP'], app.config['PORT'])
+    return render_template('index.html', ok=ok, disabled=disabled,
+                           status_params=status_params)
 
 @app.route('/channels')
 def channels():
@@ -172,14 +174,6 @@ def records_delete_confirmation(record_id):
     except Exception as e:
         flash('Record deletion failed: {}'.format(e), 'error')
     return redirect('/records')
-
-@app.route('/settings')
-def settings():
-    """
-    Settings link
-    """
-    ok, disabled = app.disable_links()
-    return render_template('settings.html', disabled=disabled)
 
 @app.route('/orig')
 def orig():

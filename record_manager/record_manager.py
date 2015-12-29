@@ -4,24 +4,24 @@ import argparse
 import re
 import requests
 
+from collections import OrderedDict
 from string import Template
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
-from flask import Flask, Config
-from flask import render_template, flash, redirect
+from flask import Flask, Config, g
+from flask import render_template, flash, redirect, request
 
 from forms import RecordForm
 
 class RecordManagerServer(Flask):
     def __init__(self, *args, **kwargs):
         super(RecordManagerServer, self).__init__(*args, **kwargs)
-        self._channels = []
-        self._records = []
         
     def generate_url(self, ip, port):
         """
         Generate a URL
         """
+        self._channels = OrderedDict()
         self.url = Template('http://{}:{}/$target'.format(ip, port))
         
     @property
@@ -30,21 +30,19 @@ class RecordManagerServer(Flask):
         Return and cache channel list
         """
         if not self._channels or len(self._channels) == 0:
-            requests.get(self.url.substitute(target='login'), timeout=2)
+            requests.get(self.url.substitute(target='login'), timeout=5)
             req = requests.get(self.url.substitute(target='channels/'),
                 timeout=2)
             soup = BeautifulSoup(req.text, 'html.parser')
+            groups = { group['id']: group['name']
+                      for group in soup.find_all('category') }
             for channel in soup.find_all('channel'):
-                self._channels.append(
-                    (
-                        channel['id'],
-                        channel['name'],
-                        channel['group'],
-                        channel['adult'],
-                        channel['epg_id'],
-                    )
-                )
-            self._channels = sorted(self._channels, key=lambda x: x[1])
+                self._channels[channel['id']] = {
+                        'name': channel['name'],
+                        'group': groups[channel['group']],
+                        'adult': channel['adult'],
+                        'epg': channel['epg_id'],
+                }
         return self._channels
     
     @property
@@ -116,9 +114,34 @@ def channels():
     """
     Channels link
     """
-    channels = app.channels
-    return render_template('channels.html', channels=channels)
+    return render_template('channels.html', channels=app.channels)
     
+@app.route('/channels/<channel_id>')
+def channel_view(channel_id):
+    """
+    Channel detail view
+    """
+    channel = app.channels[channel_id]
+    try:
+        payload = {
+            'id': channel['epg'],
+        }
+        requests.get(app.url.substitute(target='login'), timeout=2)
+        req = requests.get(app.url.substitute(
+            target='epg/'), params=payload, timeout=2)
+        soup = BeautifulSoup(req.text, 'html.parser')
+        epgs = []
+        for epg in soup.find_all('telecast'):
+            epgs.append(
+                (
+                    datetime.fromtimestamp(float(epg['btime'])),
+                    datetime.fromtimestamp(float(epg['etime'])),
+                    epg['name'],
+                )
+            )
+    except Exception as e:
+        flash('Channel view failed: {}'.format(e), 'error')
+    return render_template('channel_view.html', channel=channel, channel_id=channel_id, epgs=epgs)
 
 @app.route('/records')
 def records():
@@ -128,14 +151,26 @@ def records():
     records = app.records
     return render_template('records.html', records=records)
 
+
+@app.route('/records/add/<channel_id>/<btime>/<etime>', methods=('GET', 'POST'))
 @app.route('/records/add', methods=('GET', 'POST'))
-def records_form():
+def records_form(channel_id=None, btime=None, etime=None):
     """
     Form handling for records
     """
     form = RecordForm()
-    form.channel_id.choices = [ (channel[0], channel[1])
-        for channel in app.channels ]
+    form.channel_id.choices = [ (int(id), channel['name'])
+        for id, channel in app.channels.items() ]
+    if channel_id and btime and etime:
+        try:
+            btime = datetime.strptime(btime, '%Y-%m-%d %H:%M:%S')
+            etime = datetime.strptime(etime, '%Y-%m-%d %H:%M:%S')
+            form.channel_id.data = int(channel_id)
+            form.start.data = btime
+            form.end.data = etime
+        except ValueError:
+            flash('Datetime arguments are invalid: {}'.format(e), 'error')
+            return redirect('/records')
     now = datetime.now() + timedelta(hours=2)
     later = now + timedelta(hours=2)
     form.start.description = 'e.g. {}'.format(now.strftime('%d-%m-%Y %H:%M'))
@@ -156,6 +191,7 @@ def records_form():
         return redirect('/records')
     return render_template('records_add.html', form=form)
 
+
 @app.route('/records/delete/<record_id>')
 def records_delete_confirmation(record_id):
     try:
@@ -175,9 +211,11 @@ def records_delete_confirmation(record_id):
         flash('Record deletion failed: {}'.format(e), 'error')
     return redirect('/records')
 
+
 @app.route('/orig')
 def orig():
     return render_template('index_orig.html')
+
 
 def main():
     parser = argparse.ArgumentParser(description=(
@@ -193,7 +231,7 @@ def main():
     app.config['IP'] = args.p2pproxy_address
     app.config['PORT'] = args.p2pproxy_port
     app.generate_url(app.config['IP'], app.config['PORT'])
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
 
 if __name__ == '__main__':
     main()

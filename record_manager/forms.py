@@ -9,7 +9,7 @@ class RecordForm(Form):
     """
     Form for records
     """
-    channel_id = SelectField(u'Channel')
+    channel_id = SelectField(u'Channel', coerce=int)
     start = DateTimeField(
         format='%d-%m-%Y %H:%M',
         validators=[DataRequired()])

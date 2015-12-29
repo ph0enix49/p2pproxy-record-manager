@@ -13,16 +13,16 @@
           <th>#</th>
           <th>Name</th>
           <th>Category</th>
-          <th>EPG</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
-        {% for channel in channels %}
+        {% for id, channel in channels.items() %}
           <tr>
-            <td>{{ channel[0] }}</td>
-            <td>{{ channel[1] }}</td>
-            <td>{{ channel[2] }}</td>
-            <td>{{ channel[3] }}</td>
+            <td>{{ id }}</td>
+            <td>{{ channel['name'] }}</td>
+            <td>{{ channel['group'] }}</td>
+            <td><a class="btn btn-default btn-xs" href="{{ url_for('channel_view', channel_id=id) }}" role="button">Details</a></td>
           </tr>
         {% endfor %}
       </tbody>

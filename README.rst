@@ -16,6 +16,7 @@ Installation
 This application could be installed inside a virtual environment or systemwide.
 
 To install in a virtual environment or systemwide using pip:
+
 * Ensure you have a virtualenvwrapper package installed (virtual env option)
 * Create a virtualenv (optional but recommended):
 

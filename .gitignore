@@ -1,5 +1,4 @@
 *.pyc
 .DS_Store
 *.pyo
-dist/
 *.egg-info*

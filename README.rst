@@ -17,22 +17,27 @@ This application could be installed inside a virtual environment or systemwide.
 To install in a virtual environment or systemwide using pip:
 * Ensure you have a virtualenvwrapper package installed (virtual env option)
 * Create a virtualenv (optional but recommended):
-    mkvirtualenv record-manager
+
+```mkvirtualenv record-manager```
+
 * Install:
-  from repo:
-    pip install git+https://github.com/ph0enix49/p2pproxy-record-manager.git
-  from tarball:
-    pip install p2pproxy-record-manager-<version>.tar.gz
-  from locally cloned repo:
-    pip install .
+
+  * from repo:
+    ```pip install git+https://github.com/ph0enix49/p2pproxy-record-manager.git```
+  * from tarball:
+    ```pip install p2pproxy-record-manager-<version>.tar.gz```
+  * from locally cloned repo:
+    ```pip install .```
 * You may need to prepend "sudo" if you are installing systemwide
     
-To install systemwide via python setup:
-* Clone this repo from github:
-    git clone https://github.com/ph0enix49/p2pproxy-record-manager.git
+* To install systemwide via python setup:
+
+  * Clone this repo from github:
+    ```git clone https://github.com/ph0enix49/p2pproxy-record-manager.git```
 * Or download a tarball and unpack.
-* Install:
-    sudo python setup.py
+
+  * Install:
+    ```sudo python setup.py```
     
 You can also configure upstart to launch the application upon boot. Copy
 contrib/record-manager to /etc/init and modify parameters as required. It

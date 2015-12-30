@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% set active_page = "channels" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>Channels</h2>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for id, channel in channels.items() %}
+          <tr>
+            <td>{{ id }}</td>
+            <td>{{ channel['name'] }}</td>
+            <td>{{ channel['group'] }}</td>
+            <td><a class="btn btn-default btn-xs" href="{{ url_for('channel_view', channel_id=id) }}" role="button">Details</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

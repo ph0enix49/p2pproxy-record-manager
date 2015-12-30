@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% set active_page = "records" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>Schedule a recording</h2>
+</div>
+<form method="post">
+  {{ form.csrf_token }}
+  <div class="form-group">
+    <label for="channel_id">Channel:</label>
+    <p>{{ form.channel_id }}</p>
+  </div>
+  {% if form.start.errors %}
+  <div class="form-group has-error">
+    <label class="control-label" for="start">Start date and time:</label>
+    <p>{{ form.start(placeholder=form.start.description) }}</p>
+    {% for error in form.start.errors %}
+      <span id="helpBlock2" class="help-block">{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="form-group">
+    <label for="start">Start date and time:</label>
+    <p>{{ form.start(placeholder=form.start.description) }}</p>
+  </div>
+  {% endif %}
+  {% if form.end.errors %}
+  <div class="form-group has-error">
+    <label class="control-label" for="end">End date and time:</label>
+    <p>{{ form.end(placeholder=form.end.description) }}</p>
+    {% for error in form.end.errors %}
+      <span id="helpBlock2" class="help-block">{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="form-group">
+    <label for="end">End date and time:</label>
+    <p>{{ form.end(placeholder=form.end.description) }}</p>
+  </div>
+  {% endif %}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

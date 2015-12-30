@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 {% set active_page = "index" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ _('Index') }}{% endblock %}
 {% block content %}
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>P2P Proxy Record Manager</h1>
-        <p>Application to manage records for Local TS Proxy.</p>
+        <h1>{{ _('P2P Proxy Record Manager') }}</h1>
+        <p>{{ _('Application to manage records for Local TS Proxy.') }}</p>
       </div>
       <div class="page-header">
-        <h1>System status</h1>
+        <h1>{{ _('System status') }}</h1>
       </div>
       <div class="container">
         <div class="row">
           <div class="col-xs-8 col-md-3">
-            <h4>P2PProxy server status:</h4>
+            <h4>{{ _('P2PProxy server status') }}:</h4>
           </div>
           <div class="col-xs-4 col-md-1">
             <h4>
             {% if ok %}
-              <span class="label label-success">OK</span>
+              <span class="label label-success">{{ _('OK') }}</span>
             {% else %}
-              <span class="label label-danger">Not available</span>
+              <span class="label label-danger">{{ _('Not available') }}</span>
             {% endif %}
             </h4>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-8 col-md-3">
-            <h4>P2PProxy server address:</h4>
+            <h4>{{ _('P2PProxy server address') }}:</h4>
           </div>
           <div class="col-xs-4 col-md-1">
             <h4><span class="label label-default">{{ status_params[0] }}</span></h4>
@@ -35,7 +35,7 @@
         </div>
         <div class="row">
           <div class="col-xs-8 col-md-3">
-            <h4>P2PProxy server port:</h4>
+            <h4>{{ _('P2PProxy server port') }}:</h4>
           </div>
           <div class="col-xs-4 col-md-1">
             <h4><span class="label label-default">{{ status_params[1] }}</span></h4>

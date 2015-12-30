@@ -148,7 +148,7 @@ def channel_view(channel_id):
                 )
             )
     except Exception as e:
-        flash('Channel view failed: {}'.format(e), 'error')
+        flash(_('Channel view failed: {}').format(e), 'error')
     return render_template('channel_view.html', channel=channel,
                            channel_id=channel_id, epgs=epgs)
 
@@ -178,7 +178,7 @@ def records_form(channel_id=None, btime=None, etime=None):
             form.start.data = btime
             form.end.data = etime
         except ValueError:
-            flash('Datetime arguments are invalid: {}'.format(e), 'error')
+            flash(_('Datetime arguments are invalid: {}').format(e), 'error')
             return redirect('/records')
     now = datetime.now() + timedelta(hours=2)
     later = now + timedelta(hours=2)
@@ -194,9 +194,9 @@ def records_form(channel_id=None, btime=None, etime=None):
             requests.get(app.url.substitute(target='login'), timeout=2)
             result = requests.get(app.url.substitute(
                 target='records/add'), params=payload, timeout=2)
-            flash('Record scheduled', 'success')
+            flash(_('Record scheduled'), 'success')
         except Exception as e:
-            flash('Record schedule failed: {}'.format(e), 'error')
+            flash(_('Record schedule failed: {}').format(e), 'error')
         return redirect('/records')
     return render_template('records_add.html', form=form)
 
@@ -218,9 +218,9 @@ def records_delete_confirmation(record_id):
             raise Exception('delete failed')
         if stop.status_code != 200:
             raise Exception('stop failed')
-        flash('Record deleted', 'success')
+        flash(_('Record deleted'), 'success')
     except Exception as e:
-        flash('Record deletion failed: {}'.format(e), 'error')
+        flash(_('Record deletion failed: {}').format(e), 'error')
     return redirect('/records')
 
 
@@ -241,7 +241,7 @@ def main():
     app.config['IP'] = args.p2pproxy_address
     app.config['PORT'] = args.p2pproxy_port
     app.generate_url(app.config['IP'], app.config['PORT'])
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
 
 if __name__ == '__main__':
     main()

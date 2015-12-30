@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% set active_page = "channels" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ _('Channels') }}{% endblock %}
 {% block content %}
 <div class="page-header">
-  <h2>Channels</h2>
+  <h2>{{ _('Channels') }}</h2>
 </div>
 <div class="row">
   <div class="col-md-6">
@@ -11,9 +11,9 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Details</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Category') }}</th>
+          <th>{{ _('Details') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +22,7 @@
             <td>{{ id }}</td>
             <td>{{ channel['name'] }}</td>
             <td>{{ channel['group'] }}</td>
-            <td><a class="btn btn-default btn-xs" href="{{ url_for('channel_view', channel_id=id) }}" role="button">Details</a></td>
+            <td><a class="btn btn-default btn-xs" href="{{ url_for('channel_view', channel_id=id) }}" role="button">{{ _('Details') }}</a></td>
           </tr>
         {% endfor %}
       </tbody>

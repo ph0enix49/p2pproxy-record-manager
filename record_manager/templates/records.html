@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% set active_page = "records" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ _('Recodrings') }}{% endblock %}
 {% block content %}
 <div class="page-header">
-  <h2>Recordings</h2>
+  <h2>{{ _('Recordings') }}</h2>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <a class="btn btn-primary" href="{{ url_for('records_form') }}" role="button">Add</a>
+        <a class="btn btn-primary" href="{{ url_for('records_form') }}" role="button">{{ _('Add') }}</a>
     </div>
 </div>
 <div class="row">
@@ -15,11 +15,11 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Status</th>
-          <th>Delete</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Start') }}</th>
+          <th>{{ _('End') }} </th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Delete') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -30,11 +30,11 @@
             <td>{{ record[2].strftime("%d %b %Y, %H:%M") }}</td>
             <td>{{ record[3] }}</td>
             {% if record[3] == 'Wait' %}
-            {% set button_text = 'Cancel' %}
+            {% set button_text = _('Cancel') %}
             {% else %}
-            {% set button_text = 'Delete' %}
+            {% set button_text = _('Delete') %}
             {% endif %}
-            <td align="center"><a onclick="return confirm('Are you sure you want to {{ button_text.lower() }} this schedule?')" class="btn btn-default btn-sm" href="{{ url_for('records_delete_confirmation', record_id=record[4]) }}">{{ button_text }}</a></td>
+            <td align="center"><a onclick="return confirm('{{ _("Are you sure you want to") }} {{ button_text.lower() }} {{ _("this schedule?") }}')" class="btn btn-default btn-sm" href="{{ url_for('records_delete_confirmation', record_id=record[4]) }}">{{ button_text }}</a></td>
           </tr>
         {% endfor %}
       </tbody>

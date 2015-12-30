@@ -1,2 +1,2 @@
-recursive-include record-manager/templates *
-recursive-include record-manager/static *
+recursive-include record_manager/templates *
+recursive-include record_manager/static *

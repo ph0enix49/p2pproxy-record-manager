@@ -16,18 +16,18 @@ from forms import RecordForm
 class RecordManagerServer(Flask):
     def __init__(self, *args, **kwargs):
         super(RecordManagerServer, self).__init__(*args, **kwargs)
+        self._channels = OrderedDict()
         
     def generate_url(self, ip, port):
         """
         Generate a URL
         """
-        self._channels = OrderedDict()
         self.url = Template('http://{}:{}/$target'.format(ip, port))
         
     @property
     def channels(self):
         """
-        Return and cache channel list
+        Return and cache channel list.
         """
         if not self._channels or len(self._channels) == 0:
             requests.get(self.url.substitute(target='login'), timeout=5)
@@ -48,7 +48,7 @@ class RecordManagerServer(Flask):
     @property
     def records(self):
         """
-        Return and cache records list
+        Return and cache recordings list.
         """
         requests.get(self.url.substitute(target='login'), timeout=2)
         req = requests.get(self.url.substitute(target='records/all'),
@@ -70,7 +70,7 @@ class RecordManagerServer(Flask):
     
     def disable_links(self):
         """
-        Disabled links when P2P proxy is inaccessible
+        Disable links when P2P proxy is inaccessible.
         """
         try:
             req = requests.get(app.url.substitute(target='stat'), timeout=2)
@@ -86,7 +86,7 @@ class RecordManagerServer(Flask):
 
 class DefaultConfig(object):
     """
-    Default configuration
+    Default configuration.
     """
     IP = "127.0.0.1"
     PORT = "8081"
@@ -101,7 +101,7 @@ app.config.from_object(DefaultConfig)
 @app.route('/')
 def index():
     """
-    Index page with the list of main links to display
+    Index page with the list of main links to display.
     """
     # Check if p2p proxy server is accessible
     ok, disabled = app.disable_links()
@@ -112,14 +112,14 @@ def index():
 @app.route('/channels')
 def channels():
     """
-    Channels link
+    Channels list view.
     """
     return render_template('channels.html', channels=app.channels)
     
 @app.route('/channels/<channel_id>')
 def channel_view(channel_id):
     """
-    Channel detail view
+    Channel detail view.
     """
     channel = app.channels[channel_id]
     try:
@@ -146,7 +146,7 @@ def channel_view(channel_id):
 @app.route('/records')
 def records():
     """
-    Records link
+    Recordings list view.
     """
     records = app.records
     return render_template('records.html', records=records)
@@ -156,7 +156,7 @@ def records():
 @app.route('/records/add', methods=('GET', 'POST'))
 def records_form(channel_id=None, btime=None, etime=None):
     """
-    Form handling for records
+    Form handling for recordings.
     """
     form = RecordForm()
     form.channel_id.choices = [ (int(id), channel['name'])
@@ -194,6 +194,9 @@ def records_form(channel_id=None, btime=None, etime=None):
 
 @app.route('/records/delete/<record_id>')
 def records_delete_confirmation(record_id):
+    """
+    Confirm and delete recordings.
+    """
     try:
         payload = {
             'id': record_id,
@@ -212,12 +215,10 @@ def records_delete_confirmation(record_id):
     return redirect('/records')
 
 
-@app.route('/orig')
-def orig():
-    return render_template('index_orig.html')
-
-
 def main():
+    """
+    Main function to execute.
+    """
     parser = argparse.ArgumentParser(description=(
         'P2P Proxy Record manager. Manage P2P proxy recordings.'
         )

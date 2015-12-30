@@ -3,9 +3,10 @@
 import argparse
 import re
 import requests
+import random
 
 from collections import OrderedDict
-from string import Template
+from string import Template, ascii_letters
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from flask import Flask, Config, g
@@ -88,9 +89,10 @@ class DefaultConfig(object):
     """
     Default configuration.
     """
+    random = random.SystemRandom()
     IP = "127.0.0.1"
     PORT = "8081"
-    SECRET_KEY = "Testtesttest"
+    SECRET_KEY = ''.join(random.choice(ascii_letters) for _ in range(15))
 
 # Initialise application
 app = RecordManagerServer(__name__)
@@ -141,7 +143,8 @@ def channel_view(channel_id):
             )
     except Exception as e:
         flash('Channel view failed: {}'.format(e), 'error')
-    return render_template('channel_view.html', channel=channel, channel_id=channel_id, epgs=epgs)
+    return render_template('channel_view.html', channel=channel,
+                           channel_id=channel_id, epgs=epgs)
 
 @app.route('/records')
 def records():

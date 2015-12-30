@@ -11,7 +11,9 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from flask import Flask, Config, g
 from flask import render_template, flash, redirect, request
+from flask.ext.babel import Babel, gettext as _
 
+from config import LANGUAGES
 from forms import RecordForm
 
 class RecordManagerServer(Flask):
@@ -92,13 +94,17 @@ class DefaultConfig(object):
     random = random.SystemRandom()
     IP = "127.0.0.1"
     PORT = "8081"
-    SECRET_KEY = ''.join(random.choice(ascii_letters) for _ in range(15))
+    SECRET_KEY = ''.join(random.choice(ascii_letters) for i in range(15))
 
-# Initialise application
+# Initialisation
 app = RecordManagerServer(__name__)
-
-# Initialise configuration
 app.config.from_object(DefaultConfig)
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())
+
 
 @app.route('/')
 def index():

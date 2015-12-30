@@ -21,6 +21,7 @@ To install in a virtual environment or systemwide using pip:
 
 ```mkvirtualenv record-manager```
 
+* Download tarball from https://github.com/ph0enix49/p2pproxy-record-manager/tree/master/dist
 * Install:
 
   * from repo:

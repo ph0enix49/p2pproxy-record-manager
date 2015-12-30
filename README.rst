@@ -16,11 +16,13 @@ Installation
 This application could be installed inside a virtual environment or systemwide.
 
 To install in a virtual environment or systemwide using pip:
+
 * Ensure you have a virtualenvwrapper package installed (virtual env option)
 * Create a virtualenv (optional but recommended):
 
 ```mkvirtualenv record-manager```
 
+* If you are installing from a tarball, download it from https://github.com/ph0enix49/p2pproxy-record-manager/tree/master/dist
 * Install:
 
   * from repo:

@@ -23,6 +23,8 @@ To install in a virtual environment or systemwide using pip:
     pip install git+https://github.com/ph0enix49/p2pproxy-record-manager.git
   from tarball:
     pip install p2pproxy-record-manager-<version>.tar.gz
+  from locally cloned repo:
+    pip install .
 * You may need to prepend "sudo" if you are installing systemwide
     
 To install systemwide via python setup:
@@ -31,3 +33,8 @@ To install systemwide via python setup:
 * Or download a tarball and unpack.
 * Install:
     sudo python setup.py
+    
+You can also configure upstart to launch the application upon boot. Copy
+contrib/record-manager to /etc/init and modify parameters as required. It
+is recommended that you launch the application manually to test all parameters
+before configuring upstart.

@@ -1,0 +1,168 @@
+# Translations template for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-12-31 10:46+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.1.1\n"
+
+#: forms.py:13 templates/channel_view.html:6 templates/records_add.html:11
+msgid "Channel"
+msgstr ""
+
+#: forms.py:19
+msgid "Recurring"
+msgstr ""
+
+#: record_manager.py:151
+msgid "Channel view failed: {}"
+msgstr ""
+
+#: record_manager.py:181
+msgid "Datetime arguments are invalid: {}"
+msgstr ""
+
+#: record_manager.py:197
+msgid "Record scheduled"
+msgstr ""
+
+#: record_manager.py:199
+msgid "Record schedule failed: {}"
+msgstr ""
+
+#: record_manager.py:221
+msgid "Record deleted"
+msgstr ""
+
+#: record_manager.py:223
+msgid "Record deletion failed: {}"
+msgstr ""
+
+#: templates/base.html:13 templates/base.html:39
+msgid "Record Manager"
+msgstr ""
+
+#: templates/base.html:43
+msgid "Home"
+msgstr ""
+
+#: templates/base.html:44 templates/channels.html:3 templates/channels.html:6
+msgid "Channels"
+msgstr ""
+
+#: templates/base.html:45 templates/records.html:3 templates/records.html:6
+msgid "Recordings"
+msgstr ""
+
+#: templates/channel_view.html:13 templates/records.html:19
+msgid "Start"
+msgstr ""
+
+#: templates/channel_view.html:14 templates/records.html:20
+msgid "End"
+msgstr ""
+
+#: templates/channel_view.html:15 templates/channels.html:14
+#: templates/records.html:18
+msgid "Name"
+msgstr ""
+
+#: templates/channel_view.html:16
+msgid "Schedule recording"
+msgstr ""
+
+#: templates/channel_view.html:25 templates/records.html:10
+msgid "Add"
+msgstr ""
+
+#: templates/channels.html:15
+msgid "Category"
+msgstr ""
+
+#: templates/channels.html:16 templates/channels.html:25
+msgid "Details"
+msgstr ""
+
+#: templates/index.html:3
+msgid "Index"
+msgstr ""
+
+#: templates/index.html:7
+msgid "P2P Proxy Record Manager"
+msgstr ""
+
+#: templates/index.html:8
+msgid "Application to manage records for Local TS Proxy."
+msgstr ""
+
+#: templates/index.html:11
+msgid "System status"
+msgstr ""
+
+#: templates/index.html:16
+msgid "P2PProxy server status"
+msgstr ""
+
+#: templates/index.html:21
+msgid "OK"
+msgstr ""
+
+#: templates/index.html:23
+msgid "Not available"
+msgstr ""
+
+#: templates/index.html:30
+msgid "P2PProxy server address"
+msgstr ""
+
+#: templates/index.html:38
+msgid "P2PProxy server port"
+msgstr ""
+
+#: templates/records.html:21
+msgid "Status"
+msgstr ""
+
+#: templates/records.html:22 templates/records.html:35
+msgid "Delete"
+msgstr ""
+
+#: templates/records.html:33
+msgid "Cancel"
+msgstr ""
+
+#: templates/records.html:37
+msgid "Are you sure you want to"
+msgstr ""
+
+#: templates/records.html:37
+msgid "this schedule?"
+msgstr ""
+
+#: templates/records_add.html:3 templates/records_add.html:6
+msgid "Schedule a recording"
+msgstr ""
+
+#: templates/records_add.html:16 templates/records_add.html:24
+msgid "Start date and time"
+msgstr ""
+
+#: templates/records_add.html:30 templates/records_add.html:38
+msgid "End date and time"
+msgstr ""
+
+#: templates/records_add.html:42
+msgid "Submit"
+msgstr ""
+

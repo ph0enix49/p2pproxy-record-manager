@@ -241,7 +241,7 @@ def main():
     app.config['IP'] = args.p2pproxy_address
     app.config['PORT'] = args.p2pproxy_port
     app.generate_url(app.config['IP'], app.config['PORT'])
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
 
 if __name__ == '__main__':
     main()

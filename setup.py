@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='p2pproxy-record-manager',
-    version='0.1',
+    version='0.1.1',
     description='Application to manage records for Local TS Proxy.',
     long_description=long_description,
     author='Said Babayev',
@@ -28,6 +28,7 @@ setup(name='p2pproxy-record-manager',
         'Werkzeug',
         'WTForms>=2.0',
         'requests>=2.9.0',
+        'Flask-Babel>=0.9',
     ],
     entry_points={
         'console_scripts': [

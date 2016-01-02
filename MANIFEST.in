@@ -1,2 +1,3 @@
 recursive-include record_manager/templates *
 recursive-include record_manager/static *
+recursive-include record_manager/translations *.mo

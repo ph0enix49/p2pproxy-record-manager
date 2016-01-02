@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% set active_page = "channels" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ channel['name'] }}{% endblock %}
 {% block content %}
 <div class="page-header">
-  <h2>Channel - {{ channel['name'] }}</h2>
+  <h2>{{ _('Channel') }} - {{ channel['name'] }}</h2>
 </div>
 <div class="row">
   <div class="col-md-12">
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Start</th>
-          <th>End</th>
-          <th>Name</th>
-          <th>Schedule recording</th>
+          <th>{{ _('Start') }}</th>
+          <th>{{ _('End') }}</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Schedule recording') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +22,7 @@
             <td>{{ epg[2] }}</td>
             <td>{{ epg[0].strftime("%d %b %Y, %H:%M") }}</td>
             <td>{{ epg[1].strftime("%d %b %Y, %H:%M") }}</td>
-            <td><a class="btn btn-default btn-xs" href="{{ url_for('records_form', channel_id=channel_id, btime=epg[0], etime=epg[1]) }}" role="button">Add</a></td>
+            <td><a class="btn btn-default btn-xs" href="{{ url_for('records_form', channel_id=channel_id, btime=epg[0], etime=epg[1]) }}" role="button">{{ _('Add') }}</a></td>
           </tr>
         {% endfor %}
       </tbody>

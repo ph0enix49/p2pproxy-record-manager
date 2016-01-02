@@ -3,14 +3,17 @@
 import argparse
 import re
 import requests
+import random
 
 from collections import OrderedDict
-from string import Template
+from string import Template, ascii_letters
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from flask import Flask, Config, g
 from flask import render_template, flash, redirect, request
+from flask.ext.babel import Babel, gettext as _
 
+from config import LANGUAGES
 from forms import RecordForm
 
 class RecordManagerServer(Flask):
@@ -88,15 +91,20 @@ class DefaultConfig(object):
     """
     Default configuration.
     """
+    random = random.SystemRandom()
     IP = "127.0.0.1"
     PORT = "8081"
-    SECRET_KEY = "Testtesttest"
+    SECRET_KEY = ''.join(random.choice(ascii_letters) for i in range(15))
 
-# Initialise application
+# Initialisation
 app = RecordManagerServer(__name__)
-
-# Initialise configuration
 app.config.from_object(DefaultConfig)
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())
+
 
 @app.route('/')
 def index():
@@ -140,8 +148,9 @@ def channel_view(channel_id):
                 )
             )
     except Exception as e:
-        flash('Channel view failed: {}'.format(e), 'error')
-    return render_template('channel_view.html', channel=channel, channel_id=channel_id, epgs=epgs)
+        flash(_('Channel view failed: {}').format(e), 'error')
+    return render_template('channel_view.html', channel=channel,
+                           channel_id=channel_id, epgs=epgs)
 
 @app.route('/records')
 def records():
@@ -169,7 +178,7 @@ def records_form(channel_id=None, btime=None, etime=None):
             form.start.data = btime
             form.end.data = etime
         except ValueError:
-            flash('Datetime arguments are invalid: {}'.format(e), 'error')
+            flash(_('Datetime arguments are invalid: {}').format(e), 'error')
             return redirect('/records')
     now = datetime.now() + timedelta(hours=2)
     later = now + timedelta(hours=2)
@@ -185,9 +194,9 @@ def records_form(channel_id=None, btime=None, etime=None):
             requests.get(app.url.substitute(target='login'), timeout=2)
             result = requests.get(app.url.substitute(
                 target='records/add'), params=payload, timeout=2)
-            flash('Record scheduled', 'success')
+            flash(_('Record scheduled'), 'success')
         except Exception as e:
-            flash('Record schedule failed: {}'.format(e), 'error')
+            flash(_('Record schedule failed: {}').format(e), 'error')
         return redirect('/records')
     return render_template('records_add.html', form=form)
 
@@ -209,9 +218,9 @@ def records_delete_confirmation(record_id):
             raise Exception('delete failed')
         if stop.status_code != 200:
             raise Exception('stop failed')
-        flash('Record deleted', 'success')
+        flash(_('Record deleted'), 'success')
     except Exception as e:
-        flash('Record deletion failed: {}'.format(e), 'error')
+        flash(_('Record deletion failed: {}').format(e), 'error')
     return redirect('/records')
 
 

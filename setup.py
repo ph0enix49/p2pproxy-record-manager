@@ -28,7 +28,7 @@ setup(name='p2pproxy-record-manager',
         'Werkzeug',
         'WTForms>=2.0',
         'requests>=2.9.0',
-        'Flask-Babel>=2.1.0',
+        'Flask-Babel>=0.9',
     ],
     entry_points={
         'console_scripts': [

@@ -174,12 +174,12 @@ def records_form(channel_id=None, btime=None, etime=None):
         try:
             btime = datetime.strptime(btime, '%Y-%m-%d %H:%M:%S')
             etime = datetime.strptime(etime, '%Y-%m-%d %H:%M:%S')
-            form.channel_id.data = int(channel_id)
-            form.start.data = btime
-            form.end.data = etime
+            selected = int(channel_id)
         except ValueError:
             flash(_('Datetime arguments are invalid: {}').format(e), 'error')
             return redirect('/records')
+    else:
+        btime = etime = selected = None
     now = datetime.now() + timedelta(hours=2)
     later = now + timedelta(hours=2)
     form.start.description = 'e.g. {}'.format(now.strftime('%d-%m-%Y %H:%M'))
@@ -198,7 +198,7 @@ def records_form(channel_id=None, btime=None, etime=None):
         except Exception as e:
             flash(_('Record schedule failed: {}').format(e), 'error')
         return redirect('/records')
-    return render_template('records_add.html', form=form)
+    return render_template('records_add.html', form=form, btime=btime, etime=etime, selected=selected)
 
 
 @app.route('/records/delete/<record_id>')
@@ -241,7 +241,7 @@ def main():
     app.config['IP'] = args.p2pproxy_address
     app.config['PORT'] = args.p2pproxy_port
     app.generate_url(app.config['IP'], app.config['PORT'])
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
 
 if __name__ == '__main__':
     main()

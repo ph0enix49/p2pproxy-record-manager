@@ -20,7 +20,7 @@
   {% if form.start.errors %}
   <div class="form-group has-error">
     <label class="control-label" for="start">{{ _('Start date and time') }}:</label>
-    <p>{{ form.start(placeholder=form.start.description) }}</p>
+    <p><input id="start" name="start" placeholder="{{ form.start.description }}" type="text" value="{{ btime }}"></p>
     {% for error in form.start.errors %}
       <span id="helpBlock2" class="help-block">{{ error }}</span>
     {% endfor %}
@@ -28,13 +28,13 @@
   {% else %}
   <div class="form-group">
     <label for="start">{{ _('Start date and time') }}:</label>
-    <p>{{ form.start(placeholder=form.start.description) }}</p>
+    <p><input id="start" name="start" placeholder="{{ form.start.description }}" type="text" value="{{ btime }}"></p>
   </div>
   {% endif %}
   {% if form.end.errors %}
   <div class="form-group has-error">
     <label class="control-label" for="end">{{ _('End date and time') }}:</label>
-    <p>{{ form.end(placeholder=form.end.description) }}</p>
+    <p><input id="end" name="end" placeholder="{{ form.end.description }}" type="text" value="{{ etime }}"></p>
     {% for error in form.end.errors %}
       <span id="helpBlock2" class="help-block">{{ error }}</span>
     {% endfor %}
@@ -42,7 +42,7 @@
   {% else %}
   <div class="form-group">
     <label for="end">{{ _('End date and time') }}:</label>
-    <p>{{ form.end(placeholder=form.end.description) }}</p>
+    <p><input id="end" name="end" placeholder="{{ form.end.description }}" type="text" value="{{ etime }}"></p>
   </div>
   {% endif %}
   <button type="submit" class="btn btn-primary">{{ _('Submit') }}</button>

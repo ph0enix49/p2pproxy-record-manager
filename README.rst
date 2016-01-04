@@ -52,4 +52,4 @@ Usage
 
 * By default it will expect p2pproxy running on localhost at port 8081
 * Address and port are configurable, ```record_manager --help`` for more info
-* App listens at port 5000, so for e.f. go to http://127.0.0.1:5000/ to open it.
+* App listens at port 5000, so for e.g. go to http://127.0.0.1:5000/ to open it.

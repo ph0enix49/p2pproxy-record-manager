@@ -43,7 +43,7 @@ To install in a virtual environment or systemwide using pip:
     ```sudo python setup.py```
     
 You can also configure upstart to launch the application upon boot. Copy
-contrib/record-manager to /etc/init and modify parameters as required. It
+contrib/record-manager.conf to /etc/init and modify parameters as required. It
 is recommended that you launch the application manually to test all parameters
 before configuring upstart.
 
